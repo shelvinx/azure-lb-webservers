@@ -41,7 +41,6 @@ module "linux_vm" {
         ip_configurations_1 = {
           name                          = "ipconfig-${each.key}"
           private_ip_subnet_resource_id = module.vnet_test.subnets.vm_subnet_1.resource_id
-          public_ip_address_resource_id = module.pip_linux[each.key].resource_id
         }
       }
     }

@@ -7,3 +7,6 @@ This Terraform configuration deploys a load-balanced web server infrastructure o
 - **Virtual Machines**: Linux-based VMs with NGINX
 - **Networking**: Virtual network, subnets, and network security groups
 - **Load Balancer**: Public-facing load balancer for distributing traffic
+
+## Notes
+- Backend pool is configured with individual VM private IPs and associated with the VNet (not at the address level, only assign at the network interface level)
