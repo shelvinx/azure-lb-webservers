@@ -29,16 +29,3 @@ module "nsg_test" {
 
   security_rules = local.nsg_rules
 }
-
-module "pip_linux" {
-  for_each = local.linux_vm_instances
-  source   = "Azure/avm-res-network-publicipaddress/azurerm"
-  version  = "0.2.0"
-
-  location            = var.location
-  resource_group_name = module.resource_group.name
-  name                = "${module.naming.public_ip.name}-${each.key}"
-  domain_name_label   = "${module.naming.virtual_machine.name}-${each.value.vm_name}"
-
-  tags = each.value.tags
-}
