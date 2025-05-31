@@ -50,20 +50,22 @@ module "linux_vm" {
   max_bid_price   = var.spot_max_price
   eviction_policy = var.eviction_policy
 
-  extensions = {
-    nginx = {
-      name                 = "Nginx"
-      publisher            = "Microsoft.Azure.Extensions"
-      type                 = "CustomScript"
-      type_handler_version = "2.1"
-
-      settings = <<SETTINGS
-        {
-        "commandToExecute": "sudo apt-get update && sudo apt-get install nginx -y && echo \"Hello World from $(hostname)\" > /var/www/html/index.html && sudo systemctl restart nginx"
-        }
-        SETTINGS
-    }
-  }
-
   tags = each.value.tags
+}
+
+resource "azurerm_virtual_machine_extension" "nginx" {
+  for_each = local.linux_vm_instances
+
+  virtual_machine_id = module.linux_vm[each.key].resource_id
+
+  name                 = "nginx"
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
+  type_handler_version = "2.1"
+
+  settings = <<SETTINGS
+    {
+    "commandToExecute": "sudo apt-get update && sudo apt-get install nginx -y && echo \"VM Hostname: $(hostname)\" > /var/www/html/index.html && sudo systemctl restart nginx"
+    }
+    SETTINGS
 }

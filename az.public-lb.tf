@@ -10,7 +10,7 @@ module "public_lb" {
   # Frontend IP Configuration
   frontend_ip_configurations = {
     frontend_configuration_1 = {
-      name = "myFrontend"
+      name                            = "myFrontend"
       create_public_ip_address        = true
       public_ip_address_resource_name = module.naming.public_ip.name_unique
       # zones = ["1", "2", "3"] # Zone-redundant
@@ -57,8 +57,24 @@ module "public_lb" {
 
       idle_timeout_in_minutes = 15
       enable_tcp_reset        = true
+
+      disable_outbound_snat = true
     }
   }
 
+  lb_outbound_rules = {
+    lb_nat_outbound_rule = {
+      name                             = "lb_nat_outbound_rule"
+      frontend_ip_configurations = [
+        {
+          name = "myFrontend"
+        }
+      ]
+
+      backend_address_pool_object_name = "pool1"
+      protocol                         = "All"
+      number_of_allocated_outbound_ports = 10000
+    }
+  }
   tags = var.tags
 }
