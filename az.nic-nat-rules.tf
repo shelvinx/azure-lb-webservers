@@ -1,7 +1,7 @@
 # Associate NAT rules with VM network interfaces
 resource "azurerm_network_interface_nat_rule_association" "ssh" {
   for_each = {
-    for k, v in { "lnx1" = "ssh_lnx1", "lnx2" = "ssh_lnx2" } : k => v
+    for k, v in { "lnx1" = "ssh-lnx1", "lnx2" = "ssh-lnx2" } : k => v
     if contains(keys(local.linux_vm_instances), k)
   }
 
