@@ -76,5 +76,26 @@ module "public_lb" {
       number_of_allocated_outbound_ports = 10000
     }
   }
+
+  lb_nat_rules = {
+    ssh_lnx1 = {
+      name                           = "ssh-lnx1"
+      frontend_ip_configuration_name = "myFrontend"
+      protocol                       = "Tcp"
+      frontend_port                  = 5001
+      backend_port                   = 22
+      enable_tcp_reset               = true
+      idle_timeout_in_minutes        = 15
+    }
+    ssh_lnx2 = {
+      name                           = "ssh-lnx2"
+      frontend_ip_configuration_name = "myFrontend"
+      protocol                       = "Tcp"
+      frontend_port                  = 5002
+      backend_port                   = 22
+      enable_tcp_reset               = true
+      idle_timeout_in_minutes        = 15
+    }
+  }
   tags = var.tags
 }
